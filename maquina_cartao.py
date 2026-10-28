@@ -15,7 +15,6 @@ while True:
         tipo_opcao = input("Escolha 1 ou 2: ")
 
         print("\nBandeira do cartão:")
-        li = ("visa, mastercard, elo, amex, hipercard")
         print("[0] visa, [1] mastercard, [2] elo, [3] amex, [4] hipercard")
         tipo_opcao2 = input("Escolha 0 ate 4: ")
 
