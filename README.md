@@ -4,25 +4,25 @@
       <img width="75" height="75" alt="Logo Ictus Solutionis" src="https://github.com/user-attachments/assets/13940d0b-4ce4-433b-bcb9-556a9e3ea316">
     </td>
     <td>
-      <h1>Ictus Solutionis</h1>
-      <b>💳 Maquininha de Cartão em Python</b>
+      <h1>Ictus Solutionis PAY</h1>
+      <b>💳 Maquininha de Cartão em Python com Interface Gráfica</b>
     </td>
   </tr>
 </table>
 
-Simulação de uma **maquininha de cartão desenvolvida em Python**, criada para aplicar conceitos de lógica de programação em um sistema de pagamentos.
+Simulação de uma **maquininha de cartão desenvolvida em Python com CustomTkinter**, criada para aplicar conceitos de lógica de programação e interface gráfica em um sistema de pagamentos.
 
 ---
 
 ## 📌 Sobre o projeto
 
-O **Ictus Solutionis** é um sistema desenvolvido em Python que simula as principais operações realizadas por uma maquininha de cartão.
+O **Ictus Solutionis PAY** é um sistema desenvolvido em Python que simula as principais operações realizadas por uma maquininha de cartão, agora com uma **interface gráfica** em tema escuro.
 
-O usuário informa o **valor da venda**, escolhe a **forma de pagamento**, seleciona a **bandeira do cartão** e, caso escolha crédito, pode definir a quantidade de parcelas.
+O usuário informa o **valor da venda**, escolhe o **tipo de pagamento** (débito ou crédito), seleciona a **bandeira do cartão** e, se quiser, define a **quantidade de parcelas**.
 
-Ao final da operação, o sistema gera um **comprovante de pagamento** contendo os dados da transação.
+Ao aprovar a venda, o sistema exibe um **comprovante** com os dados da transação e guarda a venda em uma lista. Uma segunda janela mostra todas as **vendas de hoje** e o **total do dia**.
 
-> 🎯 **Objetivo:** aplicar conhecimentos de Python e lógica de programação na construção de uma aplicação inspirada em sistemas de pagamento reais.
+> 🎯 **Objetivo:** aplicar conhecimentos de Python, lógica de programação e criação de interfaces na construção de uma aplicação inspirada em sistemas de pagamento reais.
 
 ---
 
@@ -32,42 +32,42 @@ Ao final da operação, o sistema gera um **comprovante de pagamento** contendo 
   <tr>
     <td>💰</td>
     <td><b>Registro de venda</b></td>
-    <td>Permite informar o valor da transação.</td>
+    <td>Campo para informar o valor da transação.</td>
   </tr>
   <tr>
     <td>💳</td>
     <td><b>Débito e crédito</b></td>
-    <td>Possibilidade de selecionar a forma de pagamento.</td>
+    <td>Seleção do tipo de pagamento por caixa de opções.</td>
   </tr>
   <tr>
     <td>🏦</td>
     <td><b>Bandeira do cartão</b></td>
-    <td>Seleção entre diferentes bandeiras.</td>
+    <td>Seleção entre Visa, Mastercard, Elo, Amex e Hipercard.</td>
   </tr>
   <tr>
     <td>🔢</td>
     <td><b>Parcelamento</b></td>
-    <td>Compras no crédito podem ser parceladas.</td>
-  </tr>
-  <tr>
-    <td>🧮</td>
-    <td><b>Cálculo automático</b></td>
-    <td>Calcula automaticamente o valor de cada parcela.</td>
+    <td>Campo opcional de parcelas. Se ficar vazio (ou for 0), assume 1x.</td>
   </tr>
   <tr>
     <td>📅</td>
     <td><b>Data e hora</b></td>
-    <td>Registra o momento em que a compra foi realizada.</td>
+    <td>Registra o momento da venda no formato <code>dd/mm/aaaa hh:mm</code>.</td>
   </tr>
   <tr>
     <td>🧾</td>
     <td><b>Comprovante</b></td>
-    <td>Exibe os principais dados da transação.</td>
+    <td>Exibe na tela o status <i>APROVADO</i>, data, bandeira, tipo e valor.</td>
   </tr>
   <tr>
-    <td>🔄</td>
-    <td><b>Novas vendas</b></td>
-    <td>Permite realizar várias vendas durante a execução.</td>
+    <td>🗂️</td>
+    <td><b>Vendas de hoje</b></td>
+    <td>Janela separada listando todas as vendas realizadas e o total do dia.</td>
+  </tr>
+  <tr>
+    <td>⚠️</td>
+    <td><b>Tratamento de erros</b></td>
+    <td>Mostra uma mensagem de erro caso os dados informados sejam inválidos.</td>
   </tr>
 </table>
 
@@ -77,77 +77,72 @@ Ao final da operação, o sistema gera um **comprovante de pagamento** contendo 
 
 <table>
   <tr>
-    <th>Código</th>
     <th>Bandeira</th>
   </tr>
-  <tr>
-    <td><code>0</code></td>
-    <td>Visa</td>
-  </tr>
-  <tr>
-    <td><code>1</code></td>
-    <td>Mastercard</td>
-  </tr>
-  <tr>
-    <td><code>2</code></td>
-    <td>Elo</td>
-  </tr>
-  <tr>
-    <td><code>3</code></td>
-    <td>American Express</td>
-  </tr>
-  <tr>
-    <td><code>4</code></td>
-    <td>Hipercard</td>
-  </tr>
+  <tr><td>Visa</td></tr>
+  <tr><td>Mastercard</td></tr>
+  <tr><td>Elo</td></tr>
+  <tr><td>American Express (amex)</td></tr>
+  <tr><td>Hipercard</td></tr>
 </table>
 
 ---
 
-## 🖥️ Demonstração
+## 💻 Como funciona a interface
 
-### Iniciando uma venda
+### Tela principal
 
-```text id="msuzxz"
-==================================================
- Ictus Solutionis - MAQUININHA DE CARTÃO
-==================================================
+```text
+       Ictus Solutionis
+┌─────────────────────────┐
+│ Valor R$                │
+├─────────────────────────┤
+│ credito              ▼  │
+├─────────────────────────┤
+│ visa                 ▼  │
+├─────────────────────────┤
+│ Parcelas                │
+└─────────────────────────┘
 
---- NOVA VENDA ---
-Valor da venda: R$ 120.00
+┌─────────────────────────┐
+│         APROVAR         │
+└─────────────────────────┘
 
-Tipo de pagamento:
-[1] Débito
-[2] Crédito
-Escolha 1 ou 2: 2
-
-Bandeira do cartão:
-[0] visa
-[1] mastercard
-[2] elo
-[3] amex
-[4] hipercard
-
-Escolha 0 ate 4: 0
-
-Bandeira do cartao escolhida: visa
-
-Quantas parcelas? (1 a 12) [padrão 1]: 3
+┌─────────────────────────┐
+│      VENDAS DE HOJE     │
+└─────────────────────────┘
 ```
 
-### 🧾 Comprovante gerado
+| Elemento | Tipo | Função |
+|---|---|---|
+| **Valor R$** | `CTkEntry` | Valor da venda |
+| **Tipo** | `CTkComboBox` | `debito` ou `credito` (padrão: crédito) |
+| **Bandeira** | `CTkComboBox` | Bandeira do cartão (padrão: visa) |
+| **Parcelas** | `CTkEntry` | Número de parcelas (opcional) |
+| **APROVAR** | `CTkButton` | Registra a venda e mostra o comprovante |
+| **VENDAS DE HOJE** | `CTkButton` | Abre a janela com o histórico do dia |
 
-```text id="zht08g"
-==================================================
- COMPROVANTE DE PAGAMENTO
-==================================================
-Data/Hora: 28/10/2026 18:30:00
-Bandeira: visa
-Tipo: Crédito parcelado
-Valor gasto pela pessoa: R$ 120.00
-Parcelas: 3x de R$ 40.00
-Status: APROVADO
-==================================================
+### 🧾 Exemplo de comprovante
+
+```text
+APROVADO!
+ 29/10/2026 10:00
+ mastercard ---- credito
+ R$82.00
+Salvo! Total hoje: 3
+```
+
+### 🗂️ Exemplo da janela "Vendas de Hoje"
+
+```text
+1. 29/10/2026 10:00 - R$ 35.00
+   amex credito 3x
+2. 29/10/2026 10:00 - R$ 135.00
+   elo debito 1x
+3. 29/10/2026 10:00 - R$ 82.00
+   mastercard credito 2x
+
+TOTAL DO DIA: R$ 252.00
 ```
 
 ---
@@ -162,6 +157,10 @@ Status: APROVADO
   <tr>
     <td>🐍 <b>Python 3</b></td>
     <td>Desenvolvimento da aplicação</td>
+  </tr>
+  <tr>
+    <td>🎨 <b>CustomTkinter</b></td>
+    <td>Interface gráfica moderna (tema escuro, botões, campos e janelas)</td>
   </tr>
   <tr>
     <td>📅 <b>Datetime</b></td>
@@ -183,13 +182,13 @@ Status: APROVADO
 
 Durante o desenvolvimento do projeto foram utilizados:
 
-`Variáveis` • `Input` • `Output` • `If / Elif / Else` • `While` • `Try / Except` • `Datetime` • `Formatação de Strings` • `Operações Matemáticas`
+`Variáveis` • `Funções` • `Listas` • `Dicionários` • `For / Enumerate` • `If / Else` • `Try / Except` • `Datetime` • `Formatação de Strings (f-string)` • `Operações Matemáticas` • `Interface Gráfica (CustomTkinter)` • `Eventos de botão`
 
 ---
 
 ## 📂 Estrutura do projeto
 
-```text id="ofclbi"
+```text
 ictus-solutionis/
 │
 ├── 📄 main.py
@@ -202,80 +201,81 @@ ictus-solutionis/
 
 ### 1. Clone o repositório
 
-```bash id="m2c08u"
+```bash
 git clone URL-DO-REPOSITORIO
 ```
 
 ### 2. Acesse a pasta
 
-```bash id="8h97ny"
+```bash
 cd ictus-solutionis
 ```
 
-### 3. Execute o programa
+### 3. Instale a dependência
 
-```bash id="xwyclz"
+```bash
+pip install customtkinter
+```
+
+> 💡 No VS Code, se aparecer erro de importação, aperte `Ctrl + Shift + P`, digite **Install Missing Imports** e reinicie o editor.
+
+### 4. Execute o programa
+
+```bash
 python main.py
 ```
 
-> **Requisito:** é necessário ter o Python 3 instalado no computador.
+> **Requisitos:** Python 3 e a biblioteca `customtkinter` instalados no computador.
 
 ---
 
 ## 🔄 Fluxo do sistema
 
-```text id="oh1ngb"
-Iniciar programa
+```text
+Abrir o programa
       │
       ▼
-Informar valor
+Informar valor, tipo, bandeira e parcelas
       │
       ▼
-Escolher pagamento
+Clicar em APROVAR
       │
-      ├── Débito ──────────────┐
-      │                        │
-      └── Crédito              │
-            │                  │
-            ▼                  │
-      Escolher parcelas        │
-            │                  │
-            └─────────┬────────┘
-                      ▼
-             Escolher bandeira
-                      │
-                      ▼
-              Calcular valores
-                      │
-                      ▼
-             Gerar comprovante
-                      │
-                      ▼
-              Nova venda?
-                 │        │
-                Sim      Não
-                 │        │
-                 ▼        ▼
-              Reinicia   Encerrar
+      ▼
+Dados válidos? ── Não ──► Mostrar mensagem de erro
+      │
+     Sim
+      │
+      ▼
+Salvar venda na lista
+      │
+      ▼
+Exibir comprovante
+      │
+      ▼
+Limpar campos (pronto para nova venda)
+
+A qualquer momento:
+VENDAS DE HOJE ──► abre janela com a lista e o total do dia
 ```
 
 ---
 
 ## 🚧 Melhorias futuras
 
-- [ ] Salvar vendas em um banco de dados
-- [ ] Criar histórico de transações
+- [ ] Salvar vendas em arquivo ou banco de dados (hoje o histórico some ao fechar o programa)
+- [ ] Mostrar o valor de cada parcela no comprovante
+- [ ] Bloquear parcelamento quando o pagamento for no débito
 - [ ] Adicionar taxas e juros
-- [ ] Melhorar a validação das entradas
+- [ ] Melhorar a validação das entradas (valores negativos, parcelas acima de 12)
 - [ ] Simular pagamentos recusados
-- [ ] Desenvolver uma interface gráfica
+- [ ] Aumentar a janela principal para melhorar a legibilidade
 - [ ] Gerar comprovantes em arquivos
 
 ---
 
 ## 🎓 Finalidade do projeto
 
-O **Ictus Solutionis** foi desenvolvido com finalidade educacional, buscando colocar em prática conhecimentos de **Python, lógica de programação e desenvolvimento de software** através da criação de uma solução inspirada em sistemas utilizados no cotidiano.
+O **Ictus Solutionis PAY** foi desenvolvido com finalidade educacional, buscando colocar em prática conhecimentos de **Python, lógica de programação e desenvolvimento de software** através da criação de uma solução inspirada em sistemas utilizados no cotidiano.
 
 ---
 
