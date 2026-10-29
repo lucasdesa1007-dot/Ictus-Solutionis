@@ -1,83 +1,117 @@
-import datetime
-
-print("=" * 50)
-print(" Ictus Solutionis - MAQUININHA DE CARTÃO")
-print("=" * 50)
-
-while True:
+#dentro do terminal, instala "pip install customtkinter"
+#após instalar o customtkinter, Apertar Ctrl + Shift + P e digita Install Missing Imports
+#instala ele também e depois fecha e reinicia o visual code
+ 
+import datetime as dt  #importa a biblioteca datetime "as dt" pede para chamar ela de dt
+import customtkinter as ctk  #importa a biblioteca customtkinter "as ctk" pede para chamar ela de ctk
+ 
+ctk.set_appearance_mode("dark")
+app = ctk.CTk()  #aqui nós chamamos a gaveta principal do customtkinter
+app.title("Ictus Solutionis PAY - Maquininha")
+app.geometry("200x150")  #aqui dimencionamos o tamanho da nossa tela
+ 
+scroll_frame = ctk.CTkScrollableFrame(app)  #aqui colocamos a ferramenta da barra de scroll no programa
+scroll_frame.pack(fill="both", expand=True, padx=2, pady=2)
+ 
+bandeiras = ["visa", "mastercard", "elo", "amex", "hipercard"]
+ 
+# LISTA QUE VAI SALVAR TUDO
+vendas = []
+ 
+def fazer_venda():
     try:
-        print("\n--- NOVA VENDA ---")
-        valor = float(input("Valor da venda: R$ "))
-
-        print("\nTipo de pagamento:")
-        print("[1] Débito")
-        print("[2] Crédito")
-        tipo_opcao = input("Escolha 1 ou 2: ")
-
-        print("\nBandeira do cartão:")
-        print("[0] visa, [1] mastercard, [2] elo, [3] amex, [4] hipercard")
-        tipo_opcao2 = input("Escolha 0 ate 4: ")
-
-        if tipo_opcao2 == "0":
-            tipo_ban = "visa"
-        elif tipo_opcao2 == "1":
-            tipo_ban = "mastercard"
-        elif tipo_opcao2 == "2":
-            tipo_ban = "elo"
-        elif tipo_opcao2 == "3":
-            tipo_ban = "amex"
-        elif tipo_opcao2 == "4":
-            tipo_ban = "hipercard"
-        print(f"bandeira do cartao escolhida: {tipo_ban}")
-        parcelas = 1
-        tipo_pagamento = ""
-
-        if tipo_opcao == "1":
-            tipo_pagamento = "debito"
-        elif tipo_opcao == "2":
-            tipo_pagamento = "credito"
-            parcelas_input = input("Quantas parcelas? (1 a 12) [padrão 1]: ").strip()
-            if parcelas_input == "":
-                parcelas = 1
-            else:
-                parcelas = int(parcelas_input)
-        else:
-            print("Opção inválida! Use 1 ou 2.")
-            continue
-
-        # Calculo SEM JUROS
+        valor = float(entry_valor.get())
+        tipo = combo_tipo.get()
+        bandeira = combo_bandeira.get()
+        parcelas_str = entry_parcelas.get()
+        parcelas = int(parcelas_str) if parcelas_str else 1
+        if parcelas == 0: parcelas = 1
         valor_parcela = valor / parcelas
+        data = dt.datetime.now().strftime("%d/%m/%Y %H:%M")
+ 
+        # salva na lista
+        venda = {
+            "data": data,
+            "bandeira": bandeira,
+            "tipo": tipo,
+            "valor": valor,
+            "parcelas": parcelas
+        }
+        vendas.append(venda)
+ 
+        label_recibo.configure(text=f"APROVADO!\n {data}\n {bandeira} ---- {tipo}\n R${valor:.2f}\nSalvo! Total hoje: {len(vendas)}")
+        entry_valor.delete(0, 'end')
+        entry_parcelas.delete(0, 'end')
+    except Exception as e:
+        label_recibo.configure(text=f"ERRO: {e}")
 
-        # --- RECIBO ---
-        print("\n" + "=" * 50)
-        print(" COMPROVANTE DE PAGAMENTO")
-        print("=" * 50)
-        data = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        print(f"Data/Hora: {data}")
-        print(f"Bandeira: {tipo_ban}")
 
-        if tipo_pagamento == "debito":
-            print(f"Tipo: Débito à vista")
-            print(f"Valor gasto pela pessoa: R$ {valor:.2f}")
-            print(f"Parcelas: À vista")
-        else:
-            if parcelas == 1:
-                print(f"Tipo: Crédito à vista")
-                print(f"Valor gasto pela pessoa: R$ {valor:.2f}")
-                print(f"Parcelas: 1x de R$ {valor:.2f}")
-            else:
-                print(f"Tipo: Crédito parcelado")
-                print(f"Valor gasto pela pessoa: R$ {valor:.2f}")
-                print(f"Parcelas: {parcelas}x de R$ {valor_parcela:.2f}")
 
-        print(f"Status: APROVADO")
-        print("=" * 50)
 
-        continuar = input("\nFazer nova venda? (s/n): ").lower()
-        if continuar != 's':
-            print("\nMaquininha desligada. Até mais!")
-            break
+####   =================================================
+####   AQUI COMEÇA A SEGUNDA TELA PARA MOSTRAR AS VENDAS
+####   =================================================
 
-    except ValueError as erro:
-        print("\nERRO: ", erro)
-        break
+def mostrar_vendas():
+    # cria uma janela nova
+    janela = ctk.CTkToplevel(app)
+    janela.title(f"Vendas de Hoje - {len(vendas)} vendas")
+    janela.geometry("200x150")
+ 
+    if not vendas:
+        ctk.CTkLabel(janela, text="Nenhuma venda hoje").pack(pady=20)
+        #CTkLabel vale pelo print, serve apenas para apresentar uma mensagem
+        return
+ 
+    scroll = ctk.CTkScrollableFrame(janela)
+    scroll.pack(fill="both", expand=True, padx=5, pady=5)
+ 
+    total = 0
+    for i, v in enumerate(vendas, 1):
+        total += v['valor']
+        texto = f"{i}. {v['data']} - R$ {v['valor']:.2f}\n   {v['bandeira']} {v['tipo']} {v['parcelas']}x"
+        ctk.CTkLabel(scroll, text=texto, anchor="w", justify="left", font=("Arial", 10)).pack(fill="x", pady=3, padx=5)
+   
+    ctk.CTkLabel(scroll, text=f"\nTOTAL DO DIA: R$ {total:.2f}", font=("Arial", 12, "bold")).pack(pady=10)
+
+####       =====================================
+####       AQUI TERMINA A TELA DE MOSTRAR VENDAS
+####       =====================================
+ 
+
+
+
+
+
+# UI
+#CTkLabel = esse é só para para mostrar a frase, tipo print
+#CTkEntry = esse é como se fosse o input
+#CTkComboBox= esse gera uma box para selecionar opções pré estabelecidas
+#CTkButton= esse é um botão que gera uma reação
+ 
+ctk.CTkLabel(scroll_frame, text="Ictus Solutionis", font=("Arial", 12, "bold")).pack(pady=2)
+ 
+entry_valor = ctk.CTkEntry(scroll_frame, placeholder_text="Valor R$", width=120, height=20, font=("Arial", 10))
+entry_valor.pack(pady=2, padx=5)
+ 
+combo_tipo = ctk.CTkComboBox(scroll_frame, values=["debito", "credito"], width=120, height=20, font=("Arial", 10))
+combo_tipo.set("credito")
+combo_tipo.pack(pady=2, padx=5)
+ 
+combo_bandeira = ctk.CTkComboBox(scroll_frame, values=bandeiras, width=120, height=20, font=("Arial", 10))
+combo_bandeira.set("visa")
+combo_bandeira.pack(pady=2, padx=5)
+ 
+entry_parcelas = ctk.CTkEntry(scroll_frame, placeholder_text="Parcelas", width=120, height=20, font=("Arial", 10))
+entry_parcelas.pack(pady=2, padx=5)
+ 
+btn = ctk.CTkButton(scroll_frame, text="APROVAR", width=120, height=22, font=("Arial", 10, "bold"), command=fazer_venda)
+btn.pack(pady=3)
+ 
+btn_lista = ctk.CTkButton(scroll_frame, text="VENDAS DE HOJE", width=120, height=22, fg_color="gray", font=("Arial", 10), command=mostrar_vendas)
+btn_lista.pack(pady=3)
+ 
+label_recibo = ctk.CTkLabel(scroll_frame, text="", font=("Arial", 10), justify="left", anchor="w", width=120, height=40)
+label_recibo.pack(pady=2, padx=5)
+ 
+app.mainloop()
